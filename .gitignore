@@ -1,0 +1,33 @@
+# Local SDK/tool caches
+.toolcache/
+
+# Build/package binaries
+*.apk
+*.aab
+*.ipa
+*.xcarchive
+*.dSYM.zip
+*.app
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Secrets / local env
+.env
+.env.*
+
+# Agent/browser artifacts
+artifacts/
+playwright-report/
+
+# ML/asset binaries that should be downloaded externally
+*.tflite
+*.onnx
+*.pt
+*.pb
+*.weights
+
+# Python cache
+__pycache__/
+*.pyc
