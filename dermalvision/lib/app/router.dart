@@ -7,6 +7,9 @@ import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/signup_screen.dart';
 import '../features/home/presentation/home_screen.dart';
 import '../features/onboarding/presentation/onboarding_screen.dart';
+import '../features/camera/presentation/camera_screen.dart';
+import '../features/analysis/presentation/analysis_result_container.dart';
+import '../features/analysis/presentation/analysis_waiting_screen.dart';
 
 part 'router.g.dart';
 
@@ -59,6 +62,24 @@ GoRouter goRouter(GoRouterRef ref) {
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingScreen(),
+      ),
+      GoRoute(
+        path: '/camera/:zoneId',
+        builder: (context, state) => CameraScreen(
+          zoneId: state.pathParameters['zoneId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/analysis/:analysisId',
+        builder: (context, state) => AnalysisResultContainer(
+          analysisId: state.pathParameters['analysisId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/session/:sessionId/waiting',
+        builder: (context, state) => AnalysisWaitingScreen(
+          sessionId: state.pathParameters['sessionId']!,
+        ),
       ),
     ],
   );
