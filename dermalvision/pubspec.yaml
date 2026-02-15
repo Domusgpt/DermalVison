@@ -27,6 +27,7 @@ dependencies:
   firebase_analytics: ^11.3.6
   firebase_crashlytics: ^4.2.1
   firebase_remote_config: ^5.2.1
+  firebase_vertexai: ^1.1.0
 
   # === CAMERA & IMAGE ===
   camera: ^0.11.0+2

@@ -10,6 +10,7 @@ import '../features/onboarding/presentation/onboarding_screen.dart';
 import '../features/camera/presentation/camera_screen.dart';
 import '../features/analysis/presentation/analysis_result_container.dart';
 import '../features/analysis/presentation/analysis_waiting_screen.dart';
+import '../features/skin_shurpa/presentation/chat_screen.dart';
 
 part 'router.g.dart';
 
@@ -79,6 +80,12 @@ GoRouter goRouter(GoRouterRef ref) {
         path: '/session/:sessionId/waiting',
         builder: (context, state) => AnalysisWaitingScreen(
           sessionId: state.pathParameters['sessionId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/chat/:conversationId',
+        builder: (context, state) => ChatScreen(
+          conversationId: state.pathParameters['conversationId']!,
         ),
       ),
     ],

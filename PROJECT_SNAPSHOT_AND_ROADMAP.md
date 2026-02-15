@@ -1,17 +1,18 @@
 # DermalVision — Project Snapshot & Roadmap
 **Date**: 2026-02-11
-**Status**: Phase 2 (Analysis Pipeline) Integrated
+**Status**: Phase 3 (SkinShurpa) Integrated
 
 ---
 
 ## 1. Executive Summary
-DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented the **Foundation (Phase 0)**, **Camera System (Phase 1)**, and **Analysis Pipeline (Phase 2)**. The application now supports user authentication, profile management, body zone tracking, guided photo capture, and a mock AI analysis pipeline via Cloud Functions.
+DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented the **Foundation (Phase 0)**, **Camera System (Phase 1)**, **Analysis Pipeline (Phase 2)**, and **SkinShurpa AI (Phase 3)**. The application now supports user authentication, profile management, body zone tracking, guided photo capture, AI analysis simulation, and a conversational AI assistant.
 
 Key accomplishments:
 - **Flutter Framework**: Robust architecture using Riverpod (state), GoRouter (navigation), and Freezed (immutable models).
-- **Backend**: Firebase Auth, Firestore, Storage, and Cloud Functions (TypeScript).
+- **Backend**: Firebase Auth, Firestore, Storage, Cloud Functions (TypeScript), and Vertex AI (Gemini).
 - **Camera**: Custom `CameraService` with AR overlays for guidance and lighting assessment.
 - **Analysis**: End-to-end flow from capture -> upload -> cloud processing -> result display.
+- **AI Assistant**: SkinShurpa chat interface integrated with Gemini 1.5 Flash.
 
 ---
 
@@ -40,6 +41,12 @@ Key accomplishments:
   - **Metric Cards**: Detailed scoring (e.g., "Acne: Mild", "Health: 88/100").
   - **Trend Charts**: Visualization of progress over time.
 
+### Phase 3: SkinShurpa AI
+- **Conversational Engine**: Integrated `firebase_vertexai` (Gemini 1.5 Flash).
+- **Chat UI**: `ChatScreen` with message bubbles and typing indicators.
+- **Context Awareness**: System prompt injection (infrastructure ready).
+- **Integration**: Access from Home Screen via FAB.
+
 ---
 
 ## 3. Architecture & File Manifest
@@ -58,6 +65,7 @@ lib/
 │   ├── camera/                # CameraScreen, Overlays (Guide, Ghost, Lighting)
 │   ├── monitoring/            # MonitoringSession, Repo (Capture flow)
 │   ├── analysis/              # AnalysisResult, Repo, UI (Result, Waiting)
+│   ├── skin_shurpa/           # ChatMessage, ChatRepo, GeminiService, ChatScreen
 │   ├── onboarding/            # OnboardingScreen (Quiz)
 │   ├── profile/               # UserProfile model, Repo
 │   ├── home/                  # HomeScreen
@@ -66,6 +74,7 @@ lib/
 ```
 
 ### Key Dependencies & Resolutions
+- **AI**: `firebase_vertexai`.
 - **State Management**: `flutter_riverpod` + `riverpod_generator` (pinned to `^2.4.0` to resolve `analyzer` conflicts).
 - **Data Models**: `freezed` (pinned to `^2.5.2`) + `json_serializable`.
 - **Network**: `retrofit` (pinned to `4.4.1`) + `dio`.
@@ -89,13 +98,6 @@ lib/
 ---
 
 ## 5. Future Roadmap
-
-### Phase 3: SkinShurpa (AI Assistant)
-- **Goal**: Conversational AI for guidance and results interpretation.
-- **Tasks**:
-  - Integrate Gemini API via Vertex AI.
-  - Implement Chat UI (`flutter_chat_ui` or custom).
-  - Connect Chat context to `AnalysisResult`.
 
 ### Phase 4: Premium UI (Depth & Shaders)
 - **Goal**: "Water around sphere" 3D scroll effect.
