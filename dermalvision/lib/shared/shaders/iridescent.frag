@@ -3,16 +3,13 @@
 
 uniform float uTime;
 uniform vec2 uResolution;
-uniform vec2 uTouch;
-uniform float uScrollOffset;
-uniform float uDepth;
-uniform float uInteraction;
-uniform sampler2D uTexture;
 
 out vec4 fragColor;
 
 void main() {
     vec2 uv = FlutterFragCoord().xy / uResolution;
-    vec4 color = texture(uTexture, uv);
-    fragColor = color;
+    // Iridescent effect: shifting colors based on time and position
+    vec3 col = 0.5 + 0.5 * cos(uTime + uv.xyx + vec3(0, 2, 4));
+    // Soft mix with transparency
+    fragColor = vec4(col, 0.15);
 }

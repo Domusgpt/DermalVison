@@ -3,16 +3,16 @@
 
 uniform float uTime;
 uniform vec2 uResolution;
-uniform vec2 uTouch;
-uniform float uScrollOffset;
-uniform float uDepth;
-uniform float uInteraction;
-uniform sampler2D uTexture;
 
 out vec4 fragColor;
 
 void main() {
     vec2 uv = FlutterFragCoord().xy / uResolution;
-    vec4 color = texture(uTexture, uv);
-    fragColor = color;
+    float dist = length(uv - 0.5);
+    // Liquid ripple
+    float ripple = sin(dist * 20.0 - uTime * 2.0);
+    // Highlight
+    float highlight = smoothstep(0.4, 0.6, ripple);
+
+    fragColor = vec4(vec3(1.0), highlight * 0.1);
 }
