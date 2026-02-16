@@ -1,11 +1,11 @@
 # DermalVision — Project Snapshot & Roadmap
 **Date**: 2026-02-11
-**Status**: Phase 4 (Premium UI) Integrated
+**Status**: Phase 5 (Subscription) Integrated
 
 ---
 
 ## 1. Executive Summary
-DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented the **Foundation (Phase 0)**, **Camera System (Phase 1)**, **Analysis Pipeline (Phase 2)**, **SkinShurpa AI (Phase 3)**, and **Premium UI (Phase 4)**. The application features a distinctive 3D depth-scroll interface with shader effects, alongside its core monitoring capabilities.
+DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented the **Foundation (Phase 0)**, **Camera System (Phase 1)**, **Analysis Pipeline (Phase 2)**, **SkinShurpa AI (Phase 3)**, **Premium UI (Phase 4)**, and **Subscription System (Phase 5)**. The application is now fully feature-complete for MVP, including monetization capabilities via RevenueCat.
 
 Key accomplishments:
 - **Flutter Framework**: Robust architecture using Riverpod (state), GoRouter (navigation), and Freezed (immutable models).
@@ -13,7 +13,8 @@ Key accomplishments:
 - **Camera**: Custom `CameraService` with AR overlays for guidance and lighting assessment.
 - **Analysis**: End-to-end flow from capture -> upload -> cloud processing -> result display.
 - **AI Assistant**: SkinShurpa chat interface integrated with Gemini 1.5 Flash.
-- **UI/UX**: Custom `DepthScrollView` with "water-around-sphere" physics and GLSL shader effects (`iridescent`, `liquid_glass`).
+- **UI/UX**: Custom `DepthScrollView` with "water-around-sphere" physics and GLSL shader effects.
+- **Monetization**: Subscription tier management, Paywall UI, and Feature Gating using `purchases_flutter`.
 
 ---
 
@@ -53,6 +54,13 @@ Key accomplishments:
 - **Shaders**: `ShaderCard` widget applying GLSL fragment shaders (`iridescent.frag`) to UI elements.
 - **Motion Design**: Fluid animations and reactive touch effects.
 
+### Phase 5: Subscription & Monetization
+- **RevenueCat Integration**: `SubscriptionRepository` wrapping `purchases_flutter`.
+- **Tiers**: Free, Plus, Pro tier definitions.
+- **Paywall**: Dynamic `PaywallScreen` fetching offerings from RevenueCat.
+- **Gating**: `SubscriptionGate` widget to protect premium features.
+- **UI Integration**: "Upgrade" button on Home Screen for free users.
+
 ---
 
 ## 3. Architecture & File Manifest
@@ -75,14 +83,15 @@ lib/
 │   ├── onboarding/            # OnboardingScreen (Quiz)
 │   ├── profile/               # UserProfile model, Repo
 │   ├── home/                  # HomeScreen
-│   └── subscription/          # Subscription provider stub
+│   └── subscription/          # SubscriptionTier, Repo, PaywallScreen, PlanCard
 ├── shared/
-│   ├── widgets/               # ShaderCard, DepthScrollView
+│   ├── widgets/               # ShaderCard, DepthScrollView, SubscriptionGate
 │   └── shaders/               # GLSL fragment shaders
 └── main.dart                  # App Entry Point
 ```
 
 ### Key Dependencies & Resolutions
+- **Monetization**: `purchases_flutter`.
 - **UI/Shaders**: `flutter` (includes `FragmentProgram`).
 - **AI**: `firebase_vertexai`.
 - **State Management**: `flutter_riverpod` + `riverpod_generator` (pinned to `^2.4.0` to resolve `analyzer` conflicts).
@@ -108,13 +117,6 @@ lib/
 ---
 
 ## 5. Future Roadmap
-
-### Phase 5: Subscription System
-- **Goal**: Monetization via RevenueCat.
-- **Tasks**:
-  - Integrate `purchases_flutter`.
-  - Implement Paywall UI.
-  - Gate advanced analysis features.
 
 ### Phase 6: Notifications & Scheduling
 - **Goal**: Re-engagement.
