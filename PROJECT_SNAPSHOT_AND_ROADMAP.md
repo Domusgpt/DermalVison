@@ -1,11 +1,11 @@
 # DermalVision — Project Snapshot & Roadmap
 **Date**: 2026-02-11
-**Status**: Phase 3 (SkinShurpa) Integrated
+**Status**: Phase 4 (Premium UI) Integrated
 
 ---
 
 ## 1. Executive Summary
-DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented the **Foundation (Phase 0)**, **Camera System (Phase 1)**, **Analysis Pipeline (Phase 2)**, and **SkinShurpa AI (Phase 3)**. The application now supports user authentication, profile management, body zone tracking, guided photo capture, AI analysis simulation, and a conversational AI assistant.
+DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented the **Foundation (Phase 0)**, **Camera System (Phase 1)**, **Analysis Pipeline (Phase 2)**, **SkinShurpa AI (Phase 3)**, and **Premium UI (Phase 4)**. The application features a distinctive 3D depth-scroll interface with shader effects, alongside its core monitoring capabilities.
 
 Key accomplishments:
 - **Flutter Framework**: Robust architecture using Riverpod (state), GoRouter (navigation), and Freezed (immutable models).
@@ -13,6 +13,7 @@ Key accomplishments:
 - **Camera**: Custom `CameraService` with AR overlays for guidance and lighting assessment.
 - **Analysis**: End-to-end flow from capture -> upload -> cloud processing -> result display.
 - **AI Assistant**: SkinShurpa chat interface integrated with Gemini 1.5 Flash.
+- **UI/UX**: Custom `DepthScrollView` with "water-around-sphere" physics and GLSL shader effects (`iridescent`, `liquid_glass`).
 
 ---
 
@@ -47,6 +48,11 @@ Key accomplishments:
 - **Context Awareness**: System prompt injection (infrastructure ready).
 - **Integration**: Access from Home Screen via FAB.
 
+### Phase 4: Premium UI
+- **Depth Scroll**: `DepthScrollView` widget implementing 3D transforms (`Matrix4`) for a "vertical conveyor belt" effect.
+- **Shaders**: `ShaderCard` widget applying GLSL fragment shaders (`iridescent.frag`) to UI elements.
+- **Motion Design**: Fluid animations and reactive touch effects.
+
 ---
 
 ## 3. Architecture & File Manifest
@@ -70,10 +76,14 @@ lib/
 │   ├── profile/               # UserProfile model, Repo
 │   ├── home/                  # HomeScreen
 │   └── subscription/          # Subscription provider stub
+├── shared/
+│   ├── widgets/               # ShaderCard, DepthScrollView
+│   └── shaders/               # GLSL fragment shaders
 └── main.dart                  # App Entry Point
 ```
 
 ### Key Dependencies & Resolutions
+- **UI/Shaders**: `flutter` (includes `FragmentProgram`).
 - **AI**: `firebase_vertexai`.
 - **State Management**: `flutter_riverpod` + `riverpod_generator` (pinned to `^2.4.0` to resolve `analyzer` conflicts).
 - **Data Models**: `freezed` (pinned to `^2.5.2`) + `json_serializable`.
@@ -98,12 +108,6 @@ lib/
 ---
 
 ## 5. Future Roadmap
-
-### Phase 4: Premium UI (Depth & Shaders)
-- **Goal**: "Water around sphere" 3D scroll effect.
-- **Tasks**:
-  - Implement `DepthScrollView`.
-  - Apply custom shaders (`iridescent.frag`, `liquid_glass.frag`) to cards.
 
 ### Phase 5: Subscription System
 - **Goal**: Monetization via RevenueCat.
