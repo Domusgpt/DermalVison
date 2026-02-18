@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/analysis_result.dart';
+import '../domain/analysis_result.dart';
 import 'widgets/metric_card.dart';
 import 'widgets/skin_heatmap.dart';
 import 'widgets/trend_chart.dart';
