@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../core/services/camera_service.dart';
-import '../../../../core/services/lighting_service.dart';
+import '../../../core/services/camera_service.dart';
+import '../../../core/services/lighting_service.dart';
 import '../../monitoring/domain/monitoring_session.dart';
 import '../../monitoring/domain/monitoring_provider.dart';
-import '../../../auth/domain/auth_provider.dart';
+import '../../auth/domain/auth_provider.dart';
 import 'widgets/guide_overlay.dart';
 import 'widgets/ghost_image_overlay.dart';
 import 'widgets/lighting_indicator.dart';
@@ -44,6 +44,8 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
             error: (e, s) => Center(child: Text('Camera Error: $e', style: const TextStyle(color: Colors.white))),
             loading: () => const Center(child: CircularProgressIndicator()),
           ),
+
+          const GhostImageOverlay(),
 
           // AR Guide
           const GuideOverlay(readiness: 0.0),

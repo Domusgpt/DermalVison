@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import '../../domain/subscription_provider.dart';
+import '../domain/subscription_provider.dart';
 import 'widgets/plan_card.dart';
 
 class PaywallScreen extends ConsumerWidget {
