@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'app/app_startup_provider.dart';
 import 'app/router.dart';
 import 'app/theme/dermal_theme.dart';
 import 'firebase_options.dart';
@@ -18,6 +19,7 @@ class DermalVisionApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appStartupProvider);
     final router = ref.watch(goRouterProvider);
 
     return MaterialApp.router(
