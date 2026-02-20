@@ -30,11 +30,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
         final user = ref.read(authRepositoryProvider).currentUser;
         if (user != null) {
           await ref.read(userProfileRepositoryProvider).createProfile(
-            UserProfile(
-              uid: user.uid,
-              email: user.email,
-            ),
-          );
+                UserProfile(
+                  uid: user.uid,
+                  email: user.email,
+                ),
+              );
         }
         // Navigation handled by router
       } catch (e) {

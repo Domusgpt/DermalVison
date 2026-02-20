@@ -37,11 +37,15 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
           cameraControllerAsync.when(
             data: (controller) {
               if (controller == null || !controller.value.isInitialized) {
-                return const Center(child: Text('Camera not initialized', style: TextStyle(color: Colors.white)));
+                return const Center(
+                    child: Text('Camera not initialized',
+                        style: TextStyle(color: Colors.white)));
               }
               return CameraPreview(controller);
             },
-            error: (e, s) => Center(child: Text('Camera Error: $e', style: const TextStyle(color: Colors.white))),
+            error: (e, s) => Center(
+                child: Text('Camera Error: $e',
+                    style: const TextStyle(color: Colors.white))),
             loading: () => const Center(child: CircularProgressIndicator()),
           ),
 
@@ -62,7 +66,8 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      icon: const Icon(Icons.switch_camera, color: Colors.white),
+                      icon:
+                          const Icon(Icons.switch_camera, color: Colors.white),
                       onPressed: () {
                         ref.read(cameraServiceProvider.notifier).switchCamera();
                       },
@@ -70,7 +75,9 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
                     FloatingActionButton(
                       backgroundColor: Colors.white,
                       onPressed: () async {
-                        final file = await ref.read(cameraServiceProvider.notifier).takePicture();
+                        final file = await ref
+                            .read(cameraServiceProvider.notifier)
+                            .takePicture();
                         if (file != null && mounted) {
                           final confirmed = await showDialog<bool>(
                             context: context,
@@ -78,36 +85,42 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
                               title: const Text('Save Photo?'),
                               content: SizedBox(
                                 height: 200,
-                                child: Image.file(File(file.path), fit: BoxFit.cover),
+                                child: Image.file(File(file.path),
+                                    fit: BoxFit.cover),
                               ),
                               actions: [
-                                TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Retake')),
-                                TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Save')),
+                                TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, false),
+                                    child: const Text('Retake')),
+                                TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, true),
+                                    child: const Text('Save')),
                               ],
                             ),
                           );
 
                           if (confirmed == true && mounted) {
-                             final user = ref.read(authStateProvider).value;
-                             if (user != null) {
-                               final session = MonitoringSession(
-                                 id: const Uuid().v4(),
-                                 zoneId: widget.zoneId,
-                                 capturedAt: DateTime.now(),
-                                 photoUrls: const PhotoUrls(original: ''),
-                                 captureMetadata: const CaptureMetadata(),
-                               );
+                            final user = ref.read(authStateProvider).value;
+                            if (user != null) {
+                              final session = MonitoringSession(
+                                id: const Uuid().v4(),
+                                zoneId: widget.zoneId,
+                                capturedAt: DateTime.now(),
+                                photoUrls: const PhotoUrls(original: ''),
+                                captureMetadata: const CaptureMetadata(),
+                              );
 
-                               await ref.read(monitoringRepositoryProvider).saveSession(
-                                 user.uid,
-                                 session,
-                                 File(file.path)
-                               );
+                              await ref
+                                  .read(monitoringRepositoryProvider)
+                                  .saveSession(
+                                      user.uid, session, File(file.path));
 
-                               if (mounted) {
-                                 context.go('/session/${session.id}/waiting');
-                               }
-                             }
+                              if (mounted) {
+                                context.go('/session/${session.id}/waiting');
+                              }
+                            }
                           }
                         }
                       },

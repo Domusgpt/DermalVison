@@ -24,7 +24,8 @@ GoRouter goRouter(GoRouterRef ref) {
     initialLocation: '/home',
     redirect: (context, state) {
       final isLoggedIn = authState.value != null;
-      final isLoggingIn = state.uri.path == '/login' || state.uri.path == '/signup';
+      final isLoggingIn =
+          state.uri.path == '/login' || state.uri.path == '/signup';
 
       if (!isLoggedIn) {
         return isLoggingIn ? null : '/login';
@@ -34,7 +35,8 @@ GoRouter goRouter(GoRouterRef ref) {
       final profile = userProfile.value;
       final onOnboarding = state.uri.path == '/onboarding';
 
-      if (!userProfile.isLoading && (profile == null || !profile.onboardingComplete)) {
+      if (!userProfile.isLoading &&
+          (profile == null || !profile.onboardingComplete)) {
         return onOnboarding ? null : '/onboarding';
       }
 

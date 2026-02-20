@@ -34,13 +34,16 @@ class AnalysisResultScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Summary
-                  Text('Summary', style: Theme.of(context).textTheme.headlineSmall),
+                  Text('Summary',
+                      style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 8),
-                  Text(result.summary, style: Theme.of(context).textTheme.bodyLarge),
+                  Text(result.summary,
+                      style: Theme.of(context).textTheme.bodyLarge),
                   const SizedBox(height: 24),
 
                   // Metrics Grid
-                  Text('Metrics', style: Theme.of(context).textTheme.headlineSmall),
+                  Text('Metrics',
+                      style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 8),
                   GridView.count(
                     crossAxisCount: 2,
@@ -52,7 +55,8 @@ class AnalysisResultScreen extends StatelessWidget {
                     children: [
                       MetricCard(
                         title: 'Overall Health',
-                        value: '${result.compositeScores.overallHealth.toInt()}/100',
+                        value:
+                            '${result.compositeScores.overallHealth.toInt()}/100',
                         trend: 2.5, // Mock trend
                       ),
                       MetricCard(
@@ -61,18 +65,21 @@ class AnalysisResultScreen extends StatelessWidget {
                       ),
                       // Add condition results
                       ...result.results.entries.map((e) => MetricCard(
-                        title: e.key,
-                        value: (e.value.severity * 100).toStringAsFixed(0),
-                        status: e.value.detected ? 'Detected' : 'Clear',
-                      )),
+                            title: e.key,
+                            value: (e.value.severity * 100).toStringAsFixed(0),
+                            status: e.value.detected ? 'Detected' : 'Clear',
+                          )),
                     ],
                   ),
                   const SizedBox(height: 24),
 
                   // Trends
-                  Text('Trends', style: Theme.of(context).textTheme.headlineSmall),
+                  Text('Trends',
+                      style: Theme.of(context).textTheme.headlineSmall),
                   const SizedBox(height: 8),
-                  const SizedBox(height: 150, child: TrendChart(dataPoints: [60, 65, 62, 70, 75])),
+                  const SizedBox(
+                      height: 150,
+                      child: TrendChart(dataPoints: [60, 65, 62, 70, 75])),
                 ],
               ),
             ),

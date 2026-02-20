@@ -5,7 +5,10 @@ import '../../features/subscription/domain/subscription_tier.dart';
 import '../../features/subscription/presentation/paywall_screen.dart';
 
 class SubscriptionGate extends ConsumerWidget {
-  const SubscriptionGate({super.key, required this.child, this.requiredTier = SubscriptionTier.plus});
+  const SubscriptionGate(
+      {super.key,
+      required this.child,
+      this.requiredTier = SubscriptionTier.plus});
 
   final Widget child;
   final SubscriptionTier requiredTier;

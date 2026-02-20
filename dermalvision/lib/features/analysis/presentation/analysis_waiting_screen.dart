@@ -6,10 +6,13 @@ import '../../auth/domain/auth_provider.dart';
 import '../../monitoring/domain/monitoring_session.dart';
 
 // Provider to watch specific session
-final sessionProvider = StreamProvider.family<MonitoringSession?, String>((ref, sessionId) {
+final sessionProvider =
+    StreamProvider.family<MonitoringSession?, String>((ref, sessionId) {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return const Stream.empty();
-  return ref.watch(monitoringRepositoryProvider).watchSession(user.uid, sessionId);
+  return ref
+      .watch(monitoringRepositoryProvider)
+      .watchSession(user.uid, sessionId);
 });
 
 class AnalysisWaitingScreen extends ConsumerWidget {
@@ -23,9 +26,11 @@ class AnalysisWaitingScreen extends ConsumerWidget {
     // Listen to changes to navigate
     ref.listen(sessionProvider(sessionId), (previous, next) {
       next.whenData((session) {
-        if (session != null && (session.analysisStatus == AnalysisStatus.complete || session.analysisId != null)) {
+        if (session != null &&
+            (session.analysisStatus == AnalysisStatus.complete ||
+                session.analysisId != null)) {
           if (session.analysisId != null) {
-             context.go('/analysis/${session.analysisId}');
+            context.go('/analysis/${session.analysisId}');
           }
         }
       });

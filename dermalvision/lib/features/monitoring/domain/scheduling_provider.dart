@@ -8,11 +8,11 @@ part 'scheduling_provider.g.dart';
 void schedulingManager(SchedulingManagerRef ref) {
   ref.listen(bodyZonesProvider, (previous, next) {
     next.whenData((zones) {
-        final notifications = ref.read(notificationServiceProvider);
-        // Placeholder: Loop through zones and schedule reminders
-        // for (final zone in zones) {
-        //   if (zone.schedule?.enabled == true) { ... }
-        // }
+      final notifications = ref.read(notificationServiceProvider);
+      // Placeholder: Loop through zones and schedule reminders
+      // for (final zone in zones) {
+      //   if (zone.schedule?.enabled == true) { ... }
+      // }
     });
   });
 }

@@ -21,7 +21,8 @@ class HomeScreen extends ConsumerWidget {
           if (isFree)
             TextButton(
               onPressed: () => context.push('/paywall'),
-              child: const Text('UPGRADE', style: TextStyle(color: Colors.amber)),
+              child:
+                  const Text('UPGRADE', style: TextStyle(color: Colors.amber)),
             ),
           IconButton(
             icon: const Icon(Icons.logout),

@@ -7,7 +7,8 @@ class FirebaseChatRepository implements ChatRepository {
   final FirebaseFirestore _firestore;
 
   @override
-  Future<void> addMessage(String uid, String conversationId, ChatMessage message) {
+  Future<void> addMessage(
+      String uid, String conversationId, ChatMessage message) {
     return _firestore
         .collection('users')
         .doc(uid)

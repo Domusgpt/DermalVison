@@ -32,7 +32,9 @@ class PaywallScreen extends ConsumerWidget {
               return PlanCard(
                 package: packages[index],
                 onTap: () {
-                  ref.read(subscriptionProvider.notifier).purchase(packages[index]);
+                  ref
+                      .read(subscriptionProvider.notifier)
+                      .purchase(packages[index]);
                 },
               );
             },

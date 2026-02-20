@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class SkinHeatmap extends StatelessWidget {
@@ -10,13 +11,11 @@ class SkinHeatmap extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.network(
-          imageUrl,
+        CachedNetworkImage(
+          imageUrl: imageUrl,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => const Center(child: Icon(Icons.error)),
+          errorWidget: (_, __, ___) => const Center(child: Icon(Icons.error)),
         ),
-        // Placeholder for heatmap overlay
-        // In real implementation, this would be a CustomPaint or Shader
         Positioned.fill(
           child: Opacity(
             opacity: 0.2,
