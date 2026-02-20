@@ -1,11 +1,11 @@
 # DermalVision — Project Snapshot & Roadmap
 **Date**: 2026-02-11
-**Status**: Phase 6 (Notifications) Integrated
+**Status**: Phase 7 (Advanced Features) Integrated
 
 ---
 
 ## 1. Executive Summary
-DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented Phases 0 through 6, delivering a feature-complete application covering Foundation, Camera, Analysis, AI Assistant, Premium UI, Subscription, and Notifications.
+DermalVision is a cross-platform mobile application for AI-powered skin monitoring. We have successfully implemented Phases 0 through 7, delivering a comprehensive solution that includes Foundation, Camera, Analysis, AI Assistant, Premium UI, Subscription, Notifications, and Advanced Features (MCP Server, CLI, Localization). The project is ready for pre-launch validation.
 
 Key accomplishments:
 - **Flutter Framework**: Robust architecture using Riverpod (state), GoRouter (navigation), and Freezed (immutable models).
@@ -16,6 +16,7 @@ Key accomplishments:
 - **UI/UX**: Custom `DepthScrollView` with "water-around-sphere" physics and GLSL shader effects.
 - **Monetization**: Subscription tier management with RevenueCat.
 - **Engagement**: Local notifications and scheduling infrastructure.
+- **Extensions**: MCP Server for agent integration and CLI tool for automation.
 
 ---
 
@@ -56,7 +57,11 @@ Key accomplishments:
 ### Phase 6: Notifications & Scheduling
 - **Infrastructure**: `NotificationService` wrapping `flutter_local_notifications` and `firebase_messaging`.
 - **Scheduling**: Logic to schedule local reminders based on monitoring targets.
-- **Permissions**: iOS/Android permission handling implemented.
+
+### Phase 7: Advanced Features
+- **MCP Server**: Node.js server (`dermalvision-mcp-server`) implementing Model Context Protocol to expose skin data to external agents.
+- **CLI Tool**: Dart CLI (`dermalvision_cli`) for status checks and analysis triggers.
+- **Localization**: Infrastructure set up with `flutter_localizations` and `.arb` files.
 
 ---
 
@@ -84,10 +89,17 @@ lib/
 ├── shared/
 │   ├── widgets/               # ShaderCard, DepthScrollView, SubscriptionGate
 │   └── shaders/               # GLSL fragment shaders
+├── l10n/                      # Localization ARB files
 └── main.dart                  # App Entry Point
 ```
 
+### Additional Components
+- **Cloud Functions**: `dermalvision/functions` (TypeScript).
+- **MCP Server**: `dermalvision/functions/mcp-server` (Node.js).
+- **CLI Tool**: `dermalvision/packages/dermalvision_cli` (Dart).
+
 ### Key Dependencies & Resolutions
+- **Extensions**: `flutter_localizations`.
 - **Engagement**: `flutter_local_notifications`, `firebase_messaging`.
 - **Monetization**: `purchases_flutter`.
 - **UI/Shaders**: `flutter` (includes `FragmentProgram`).
@@ -115,12 +127,6 @@ lib/
 ---
 
 ## 5. Future Roadmap
-
-### Phase 7: Advanced Features
-- **Goal**: Time-lapse and advanced metrics.
-- **Tasks**:
-  - Time-lapse video generation.
-  - Weather/Environmental data integration.
 
 ### Phase 8: Launch Prep
 - **Goal**: Store submission.
