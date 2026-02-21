@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import '../../../../core/services/camera_service.dart';
-import '../../../../core/services/lighting_service.dart';
+import '../../../core/services/camera_service.dart';
+import '../../../core/services/lighting_service.dart';
 import '../../monitoring/domain/monitoring_session.dart';
 import '../../monitoring/domain/monitoring_provider.dart';
-import '../../../auth/domain/auth_provider.dart';
+import '../../auth/domain/auth_provider.dart';
 import 'widgets/guide_overlay.dart';
 import 'widgets/ghost_image_overlay.dart';
 import 'widgets/lighting_indicator.dart';
@@ -22,7 +22,7 @@ class CameraScreen extends ConsumerStatefulWidget {
 }
 
 class _CameraScreenState extends ConsumerState<CameraScreen> {
-  LightingQuality _lightingQuality = LightingQuality.good;
+  final LightingQuality _lightingQuality = LightingQuality.good;
 
   @override
   Widget build(BuildContext context) {
@@ -33,22 +33,20 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Camera Preview
           cameraControllerAsync.when(
             data: (controller) {
               if (controller == null || !controller.value.isInitialized) {
-                return const Center(child: Text('Camera not initialized', style: TextStyle(color: Colors.white)));
+                return const Center(
+                  child: Text('Camera not initialized', style: TextStyle(color: Colors.white)),
+                );
               }
               return CameraPreview(controller);
             },
             error: (e, s) => Center(child: Text('Camera Error: $e', style: const TextStyle(color: Colors.white))),
             loading: () => const Center(child: CircularProgressIndicator()),
           ),
-
-          // AR Guide
+          const GhostImageOverlay(),
           const GuideOverlay(readiness: 0.0),
-
-          // Controls
           Positioned(
             bottom: 40,
             left: 0,
@@ -71,56 +69,53 @@ class _CameraScreenState extends ConsumerState<CameraScreen> {
                       backgroundColor: Colors.white,
                       onPressed: () async {
                         final file = await ref.read(cameraServiceProvider.notifier).takePicture();
-                        if (file != null && mounted) {
-                          final confirmed = await showDialog<bool>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Save Photo?'),
-                              content: SizedBox(
-                                height: 200,
-                                child: Image.file(File(file.path), fit: BoxFit.cover),
-                              ),
-                              actions: [
-                                TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Retake')),
-                                TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Save')),
-                              ],
+                        if (!context.mounted || file == null) return;
+
+                        final confirmed = await showDialog<bool>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Save Photo?'),
+                            content: SizedBox(
+                              height: 200,
+                              child: Image.file(File(file.path), fit: BoxFit.cover),
                             ),
-                          );
+                            actions: [
+                              TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('Retake')),
+                              TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('Save')),
+                            ],
+                          ),
+                        );
 
-                          if (confirmed == true && mounted) {
-                             final user = ref.read(authStateProvider).value;
-                             if (user != null) {
-                               final session = MonitoringSession(
-                                 id: const Uuid().v4(),
-                                 zoneId: widget.zoneId,
-                                 capturedAt: DateTime.now(),
-                                 photoUrls: const PhotoUrls(original: ''),
-                                 captureMetadata: const CaptureMetadata(),
-                               );
+                        if (!context.mounted || confirmed != true) return;
 
-                               await ref.read(monitoringRepositoryProvider).saveSession(
-                                 user.uid,
-                                 session,
-                                 File(file.path)
-                               );
+                        final user = ref.read(authStateProvider).value;
+                        if (user == null) return;
 
-                               if (mounted) {
-                                 context.go('/session/${session.id}/waiting');
-                               }
-                             }
-                          }
-                        }
+                        final session = MonitoringSession(
+                          id: const Uuid().v4(),
+                          zoneId: widget.zoneId,
+                          capturedAt: DateTime.now(),
+                          photoUrls: const PhotoUrls(original: ''),
+                          captureMetadata: const CaptureMetadata(),
+                        );
+
+                        await ref.read(monitoringRepositoryProvider).saveSession(
+                              user.uid,
+                              session,
+                              File(file.path),
+                            );
+
+                        if (!context.mounted) return;
+                        context.go('/session/${session.id}/waiting');
                       },
                       child: const Icon(Icons.camera_alt, color: Colors.black),
                     ),
-                    const SizedBox(width: 48), // Spacer
+                    const SizedBox(width: 48),
                   ],
                 ),
               ],
             ),
           ),
-
-          // Back button
           Positioned(
             top: 50,
             left: 20,
