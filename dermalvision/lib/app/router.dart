@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../features/auth/domain/auth_provider.dart';
-import '../features/profile/domain/user_profile.dart';
 import '../features/profile/domain/user_profile_provider.dart';
 import '../features/auth/presentation/login_screen.dart';
 import '../features/auth/presentation/signup_screen.dart';
