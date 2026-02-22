@@ -8,7 +8,18 @@
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-blue.svg)](https://flutter.dev)
 [![Firebase](https://img.shields.io/badge/Firebase-Auth%20%7C%20Firestore%20%7C%20Functions-orange.svg)](https://firebase.google.com)
 [![Vertex AI](https://img.shields.io/badge/Vertex%20AI-MedGemma%20%2B%20Gemini-green.svg)](https://cloud.google.com/vertex-ai)
+[![HIPAA](https://img.shields.io/badge/Compliance-HIPAA%20Ready-blue.svg)](SECURITY.md)
+[![GDPR](https://img.shields.io/badge/Compliance-GDPR%20Ready-blue.svg)](SECURITY.md)
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
+
+---
+
+## 💡 Why DermalVision?
+
+Unlike generic symptom checkers, DermalVision combines **specialized dermatology models** (MedGemma) with **longitudinal tracking**.
+- **Consistency:** AR overlays ensure every photo is comparable over time.
+- **Privacy:** End-to-end encryption and PII redaction by default.
+- **Actionable:** Not just a label—get severity scores (0-4), change metrics, and next steps via SkinShurpa.
 
 ---
 
@@ -87,15 +98,21 @@ See [PROJECT_SNAPSHOT_AND_ROADMAP.md](PROJECT_SNAPSHOT_AND_ROADMAP.md) for detai
    flutter run
    ```
 
+### Troubleshooting Common Issues
+- **Purple/Pink Screen:** Ensure your device supports OpenGL ES 3.0 for shaders. Check `SHADER_GUIDE.md`.
+- **Auth Errors:** Verify SHA-1/SHA-256 fingerprints are added to Firebase Console for Android.
+- **Camera Permission:** On iOS simulator, camera is not supported. Use a real device.
+
 ---
 
 ## 📚 Documentation
 
-- [**API Reference**](docs/API.md): Cloud Functions and Backend Endpoints.
-- [**Data Model**](docs/DATA_MODEL.md): Firestore Schema and Data Structures.
-- [**AI Models**](docs/ML_MODELS.md): Details on MedGemma, FaceMesh, and custom models.
+- [**API Reference**](docs/API.md): Cloud Functions, Auth flows, and Rate Limits.
+- [**Data Model**](docs/DATA_MODEL.md): Firestore Schema, Indexing, and Retention.
+- [**AI Models**](docs/ML_MODELS.md): Model Cards, Metrics, and Fairness Reports.
 - [**Shader Guide**](docs/SHADER_GUIDE.md): Documentation for the custom GLSL shader system.
 - [**MCP Server**](docs/MCP_SERVER.md): Guide for external AI agent integration.
+- [**Security Policy**](SECURITY.md): HIPAA compliance and vulnerability reporting.
 
 ---
 

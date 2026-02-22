@@ -78,8 +78,33 @@ Stored within the `sessions` document or as a sub-collection for detailed report
 }
 ```
 
-## Security Rules (Summary)
-- **Users:** Read/Write only own document ().
-- **Sessions/Zones:** Read/Write only if  matches .
-- **Public Data:** None.
-- **Analysis Results:** Read-only for users (written by Admin SDK).
+## Data Governance & Compliance
+
+### 1. Indexing Strategy
+To support complex queries, the following **Composite Indexes** are required:
+
+| Collection | Fields (Asc/Desc) | Query Purpose |
+| :--- | :--- | :--- |
+| `sessions` | `userId` (Asc), `timestamp` (Desc) | List user sessions by date |
+| `sessions` | `userId` (Asc), `zoneId` (Asc), `timestamp` (Desc) | Filter sessions by body zone |
+| `conversations` | `userId` (Asc), `lastMessageAt` (Desc) | Recent chats list |
+
+### 2. Data Retention & Lifecycle
+- **Raw Images:** Stored in Google Cloud Storage.
+  - **Retention:** 3 Years (active users), 30 Days (deleted accounts).
+  - **Cold Storage:** Moved to Nearline after 90 days.
+- **Analysis Data:** Stored in Firestore indefinitely for longitudinal tracking unless deleted by user.
+- **Chat Logs:** Retained for 1 year for context, then anonymized or deleted.
+
+### 3. Backup & Disaster Recovery
+- **Firestore:** Automated daily backups via Google Cloud Backup/Restore (PITR enabled, 7-day window).
+- **Storage:** Object Versioning enabled for raw image buckets.
+- **RTO (Recovery Time Objective):** 4 hours.
+- **RPO (Recovery Point Objective):** 1 hour.
+
+### 4. GDPR/CCPA Compliance
+- **Right to Access:** Use `exportUserData(uid)` Cloud Function to generate a JSON dump.
+- **Right to be Forgotten:** Use `deleteUserAccount(uid)` to:
+  - Recursively delete Firestore docs.
+  - Delete Storage bucket folder `uploads/{uid}`.
+  - Remove Auth record.

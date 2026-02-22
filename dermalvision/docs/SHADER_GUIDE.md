@@ -17,36 +17,48 @@ DermalVision uses custom GLSL fragment shaders to deliver a premium, "future-der
   - `uTime`: float (Animation driver)
   - `uResolution`: vec2 (Card size)
   - `uTilt`: vec2 (Gyroscope pitch/roll)
-- **Usage:** Used on Premium/Pro plan cards and high-confidence analysis results.
 
 ### 2. Liquid Glass (Viscous Surface)
 - **File:** `lib/shared/shaders/liquid_glass.frag`
 - **Effect:** Simulates a thick, viscous fluid surface with refraction and surface tension ripples on touch.
-- **Uniforms:**
-  - `uTime`: float
-  - `uTouch`: vec2 (Touch position, normalized)
-  - `uScrollOffset`: float (Vertical scroll position)
-- **Usage:** Main dashboard cards, "Start Scan" buttons.
 
 ### 3. Heat Overlay (Medical Visualization)
 - **File:** `lib/shared/shaders/heat_overlay.frag`
-- **Effect:** Overlays a semi-transparent heatmap on skin images to highlight problem areas (red/yellow for high severity).
-- **Uniforms:**
-  - `uTexture`: sampler2D (Original image)
-  - `uHeatMap`: sampler2D (Generated low-res heatmap data)
-  - `uIntensity`: float (Opacity control)
-- **Usage:** Analysis Result screens.
+- **Effect:** Overlays a semi-transparent heatmap on skin images to highlight problem areas.
 
-## Implementation Details
-The `ShaderCard` widget handles:
-- Loading the `FragmentProgram`.
-- Managing the animation `Ticker`.
-- Passing touch events to the shader as uniforms.
-- Optimizing repaints (using `RepaintBoundary`).
+## Integration & Usage
 
+### Basic Implementation (Dart)
 ```dart
-ShaderCard(
-  shaderAsset: 'shaders/iridescent.frag',
-  child: AnalysisCardContent(...),
-)
+// Load program once (e.g., in a Provider)
+final program = await FragmentProgram.fromAsset('shaders/iridescent.frag');
+
+// Render in a CustomPainter
+class ShaderPainter extends CustomPainter {
+  final FragmentShader shader;
+
+  void paint(Canvas canvas, Size size) {
+    shader.setFloat(0, time); // uTime
+    shader.setFloat(1, size.width); // uResolution.x
+    shader.setFloat(2, size.height); // uResolution.y
+
+    canvas.drawRect(
+      Offset.zero & size,
+      Paint()..shader = shader,
+    );
+  }
+}
 ```
+
+### Troubleshooting & Debugging
+
+| Symptom | Probable Cause | Fix |
+| :--- | :--- | :--- |
+| **Pink/Purple Screen** | Shader compilation error or invalid uniform types. | Check console logs for GLSL errors. Verify float/vec2 alignment. |
+| **Performance Drop** | Too many active shaders or complex math (sin/cos/pow) in loop. | Reduce `MAX_ITER` in GLSL. Use `RepaintBoundary`. |
+| **Android Crash** | Old GPU driver (OpenGL ES < 3.0). | Wrap in `try-catch` and fallback to `Container(color: ...)`. |
+| **Flickering** | `uTime` precision loss over long sessions. | Reset `uTime` modulo a prime number (e.g., 3600.0). |
+
+## Platform Specifics
+- **iOS (Metal):** Shaders are transpiled to MSL. Precision is stricter. Always use `float` literals (e.g., `1.0` not `1`).
+- **Android (Skia):** Supports wider range of GLSL but varies by GPU vendor. Test on Adreno (Pixel/Galaxy) and Mali (Exynos/MediaTek).
