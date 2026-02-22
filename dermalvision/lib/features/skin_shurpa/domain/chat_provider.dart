@@ -15,10 +15,13 @@ ChatRepository chatRepository(ChatRepositoryRef ref) {
 }
 
 @riverpod
-Stream<List<ChatMessage>> chatMessages(ChatMessagesRef ref, String conversationId) {
+Stream<List<ChatMessage>> chatMessages(
+    ChatMessagesRef ref, String conversationId) {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return const Stream.empty();
-  return ref.watch(chatRepositoryProvider).watchMessages(user.uid, conversationId);
+  return ref
+      .watch(chatRepositoryProvider)
+      .watchMessages(user.uid, conversationId);
 }
 
 @riverpod

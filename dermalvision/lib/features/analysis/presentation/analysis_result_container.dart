@@ -13,16 +13,19 @@ class AnalysisResultContainer extends ConsumerWidget {
 
     return analysisAsync.when(
       data: (result) {
-        if (result == null) return const Scaffold(body: Center(child: Text('Analysis not found')));
+        if (result == null)
+          return const Scaffold(
+              body: Center(child: Text('Analysis not found')));
         // In a real app, we would fetch the session here to get the image URL.
         // For now, we use a placeholder or handle it in the next phase.
         return AnalysisResultScreen(
             result: result,
-            imageUrl: 'https://via.placeholder.com/400x600.png?text=Skin+Analysis'
-        );
+            imageUrl:
+                'https://via.placeholder.com/400x600.png?text=Skin+Analysis');
       },
       error: (e, s) => Scaffold(body: Center(child: Text('Error: $e'))),
-      loading: () => const Scaffold(body: Center(child: CircularProgressIndicator())),
+      loading: () =>
+          const Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

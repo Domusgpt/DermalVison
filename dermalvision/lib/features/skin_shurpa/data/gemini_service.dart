@@ -22,8 +22,8 @@ class GeminiService {
 
   Future<String?> sendMessage(String text) async {
     if (_model == null) {
-        // Default init if not called
-        init('You are SkinShurpa, a helpful skin health assistant.');
+      // Default init if not called
+      init('You are SkinShurpa, a helpful skin health assistant.');
     }
     try {
       final response = await _chat!.sendMessage(Content.text(text));

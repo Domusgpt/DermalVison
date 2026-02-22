@@ -10,9 +10,11 @@ class FirebaseMonitoringRepository implements MonitoringRepository {
   final FirebaseStorage _storage;
 
   @override
-  Future<void> saveSession(String uid, MonitoringSession session, File imageFile) async {
+  Future<void> saveSession(
+      String uid, MonitoringSession session, File imageFile) async {
     // 1. Upload Image
-    final ref = _storage.ref().child('users/$uid/photos/originals/${session.id}.jpg');
+    final ref =
+        _storage.ref().child('users/$uid/photos/originals/${session.id}.jpg');
     await ref.putFile(imageFile);
     final url = await ref.getDownloadURL();
 
@@ -60,6 +62,8 @@ class FirebaseMonitoringRepository implements MonitoringRepository {
         .collection('sessions')
         .doc(sessionId)
         .snapshots()
-        .map((doc) => doc.exists && doc.data() != null ? MonitoringSession.fromJson(doc.data()!) : null);
+        .map((doc) => doc.exists && doc.data() != null
+            ? MonitoringSession.fromJson(doc.data()!)
+            : null);
   }
 }

@@ -18,16 +18,25 @@ class FirebaseUserProfileRepository implements UserProfileRepository {
 
   @override
   Future<void> createProfile(UserProfile profile) {
-    return _firestore.collection('users').doc(profile.uid).set(profile.toJson());
+    return _firestore
+        .collection('users')
+        .doc(profile.uid)
+        .set(profile.toJson());
   }
 
   @override
   Future<void> updateProfile(UserProfile profile) {
-    return _firestore.collection('users').doc(profile.uid).update(profile.toJson());
+    return _firestore
+        .collection('users')
+        .doc(profile.uid)
+        .update(profile.toJson());
   }
 
   @override
   Future<void> updateOnboardingStatus(String uid, bool isComplete) {
-     return _firestore.collection('users').doc(uid).update({'onboardingComplete': isComplete});
+    return _firestore
+        .collection('users')
+        .doc(uid)
+        .update({'onboardingComplete': isComplete});
   }
 }

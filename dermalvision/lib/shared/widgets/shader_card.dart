@@ -12,7 +12,8 @@ class ShaderCard extends StatefulWidget {
   State<ShaderCard> createState() => _ShaderCardState();
 }
 
-class _ShaderCardState extends State<ShaderCard> with SingleTickerProviderStateMixin {
+class _ShaderCardState extends State<ShaderCard>
+    with SingleTickerProviderStateMixin {
   FragmentProgram? _program;
   late Ticker _ticker;
   double _time = 0.0;

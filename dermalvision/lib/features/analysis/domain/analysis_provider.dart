@@ -16,5 +16,7 @@ AnalysisRepository analysisRepository(AnalysisRepositoryRef ref) {
 Stream<AnalysisResult?> analysis(AnalysisRef ref, String analysisId) {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return const Stream.empty();
-  return ref.watch(analysisRepositoryProvider).watchAnalysis(user.uid, analysisId);
+  return ref
+      .watch(analysisRepositoryProvider)
+      .watchAnalysis(user.uid, analysisId);
 }

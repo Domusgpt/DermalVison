@@ -17,7 +17,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messagesAsync = ref.watch(chatMessagesProvider(widget.conversationId));
+    final messagesAsync =
+        ref.watch(chatMessagesProvider(widget.conversationId));
     final chatState = ref.watch(chatControllerProvider);
 
     return Scaffold(
@@ -42,7 +43,8 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                   reverse: true,
                   padding: const EdgeInsets.all(8),
                   itemCount: messages.length,
-                  itemBuilder: (context, index) => MessageBubble(message: messages[index]),
+                  itemBuilder: (context, index) =>
+                      MessageBubble(message: messages[index]),
                 );
               },
               error: (e, s) => Center(child: Text('Error: $e')),
@@ -53,9 +55,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Align(
-                alignment: Alignment.centerLeft,
-                child: TypingIndicator()
-              ),
+                  alignment: Alignment.centerLeft, child: TypingIndicator()),
             ),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -86,7 +86,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   void _sendMessage() {
     final text = _controller.text.trim();
     if (text.isNotEmpty) {
-      ref.read(chatControllerProvider.notifier).sendMessage(text, widget.conversationId);
+      ref
+          .read(chatControllerProvider.notifier)
+          .sendMessage(text, widget.conversationId);
       _controller.clear();
     }
   }

@@ -28,7 +28,9 @@ class TrendChart extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 barWidth: 3,
                 dotData: const FlDotData(show: true),
-                belowBarData: BarAreaData(show: true, color: Theme.of(context).primaryColor.withOpacity(0.1)),
+                belowBarData: BarAreaData(
+                    show: true,
+                    color: Theme.of(context).primaryColor.withOpacity(0.1)),
               ),
             ],
           ),

@@ -19,11 +19,19 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   final List<String> _selectedGoals = [];
 
   final List<String> _skinTypes = [
-    'Dry', 'Oily', 'Combination', 'Normal', 'Sensitive'
+    'Dry',
+    'Oily',
+    'Combination',
+    'Normal',
+    'Sensitive'
   ];
 
   final List<String> _goals = [
-    'Acne Control', 'Anti-Aging', 'Mole Monitoring', 'Hydration', 'Redness Reduction'
+    'Acne Control',
+    'Anti-Aging',
+    'Mole Monitoring',
+    'Hydration',
+    'Redness Reduction'
   ];
 
   void _nextPage() {
@@ -44,20 +52,20 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       final currentProfile = ref.read(userProfileProvider).value;
 
       if (currentProfile != null) {
-          final updatedProfile = currentProfile.copyWith(
-            skinType: _selectedSkinType,
-            goals: _selectedGoals,
-            onboardingComplete: true,
-          );
-          await repo.updateProfile(updatedProfile);
+        final updatedProfile = currentProfile.copyWith(
+          skinType: _selectedSkinType,
+          goals: _selectedGoals,
+          onboardingComplete: true,
+        );
+        await repo.updateProfile(updatedProfile);
       } else {
-          await repo.createProfile(UserProfile(
-            uid: user.uid,
-            email: user.email,
-            skinType: _selectedSkinType,
-            goals: _selectedGoals,
-            onboardingComplete: true,
-          ));
+        await repo.createProfile(UserProfile(
+          uid: user.uid,
+          email: user.email,
+          skinType: _selectedSkinType,
+          goals: _selectedGoals,
+          onboardingComplete: true,
+        ));
       }
 
       if (mounted) context.go('/home');
@@ -88,9 +96,9 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   bool _canProceed() {
-      if (_currentPage == 0) return _selectedSkinType != null;
-      if (_currentPage == 1) return _selectedGoals.isNotEmpty;
-      return false;
+    if (_currentPage == 0) return _selectedSkinType != null;
+    if (_currentPage == 1) return _selectedGoals.isNotEmpty;
+    return false;
   }
 
   Widget _buildSkinTypePage() {
@@ -100,11 +108,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         const Text('Select your Skin Type', style: TextStyle(fontSize: 24)),
         const SizedBox(height: 20),
         ..._skinTypes.map((type) => RadioListTile<String>(
-          title: Text(type),
-          value: type,
-          groupValue: _selectedSkinType,
-          onChanged: (val) => setState(() => _selectedSkinType = val),
-        )),
+              title: Text(type),
+              value: type,
+              groupValue: _selectedSkinType,
+              onChanged: (val) => setState(() => _selectedSkinType = val),
+            )),
       ],
     );
   }
@@ -116,18 +124,18 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         const Text('Select your Goals', style: TextStyle(fontSize: 24)),
         const SizedBox(height: 20),
         ..._goals.map((goal) => CheckboxListTile(
-          title: Text(goal),
-          value: _selectedGoals.contains(goal),
-          onChanged: (val) {
-            setState(() {
-              if (val == true) {
-                _selectedGoals.add(goal);
-              } else {
-                _selectedGoals.remove(goal);
-              }
-            });
-          },
-        )),
+              title: Text(goal),
+              value: _selectedGoals.contains(goal),
+              onChanged: (val) {
+                setState(() {
+                  if (val == true) {
+                    _selectedGoals.add(goal);
+                  } else {
+                    _selectedGoals.remove(goal);
+                  }
+                });
+              },
+            )),
       ],
     );
   }

@@ -14,7 +14,9 @@ class FirebaseAnalysisRepository implements AnalysisRepository {
         .collection('analyses')
         .doc(analysisId)
         .snapshots()
-        .map((doc) => doc.exists && doc.data() != null ? AnalysisResult.fromJson(doc.data()!) : null);
+        .map((doc) => doc.exists && doc.data() != null
+            ? AnalysisResult.fromJson(doc.data()!)
+            : null);
   }
 
   @override
