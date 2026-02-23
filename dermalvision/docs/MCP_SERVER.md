@@ -1,7 +1,7 @@
 # DermalVision MCP Server Documentation
 
 ## Overview
-The DermalVision Model Context Protocol (MCP) server allows external AI agents to interact with the DermalVision ecosystem. It exposes tools to query analysis data, check user status, and export skin monitoring records.
+The DermalVision Model Context Protocol (MCP) server allows external AI agents (like Claude Desktop) to interact with the DermalVision ecosystem. It exposes tools to query analysis data, check user status, and export skin monitoring records.
 
 ## Installation & Running
 
@@ -23,31 +23,83 @@ Deployed as a Cloud Run service:
 gcloud run deploy dermalvision-mcp --source . --region us-central1
 ```
 
-## Available Tools
+## Tool Definitions (JSON Schema)
 
-### `get_user_status`
-- **Description:** Retrieve a user's subscription tier, skin type, and recent activity.
-- **Parameters:**
-  - `uid` (string): The Firebase Auth UID of the user.
+### 1. `get_user_status`
+Retrieves a user's subscription tier, skin type, and recent activity.
 
-### `list_sessions`
-- **Description:** List monitoring sessions for a specific user.
-- **Parameters:**
-  - `uid` (string): User ID.
-  - `limit` (number, optional): Max number of sessions (default 5).
+**Schema:**
+```json
+{
+  "name": "get_user_status",
+  "description": "Get profile summary and subscription status.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "uid": {
+        "type": "string",
+        "description": "Firebase Auth User ID"
+      }
+    },
+    "required": ["uid"]
+  }
+}
+```
 
-### `get_analysis_detail`
-- **Description:** Fetch the full AI analysis report for a specific session.
-- **Parameters:**
-  - `sessionId` (string): The session ID.
+### 2. `list_sessions`
+List monitoring sessions for a specific user, sorted by date (descending).
 
-### `export_zone_history`
-- **Description:** Export a CSV-formatted history of a specific body zone's analysis over time.
-- **Parameters:**
-  - `uid` (string): User ID.
-  - `zoneId` (string): Body zone ID (e.g., "face_forehead").
+**Schema:**
+```json
+{
+  "name": "list_sessions",
+  "description": "List recent analysis sessions.",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "uid": { "type": "string" },
+      "limit": { "type": "integer", "default": 5, "maximum": 20 }
+    },
+    "required": ["uid"]
+  }
+}
+```
 
-## Security
-- The MCP server operates with a dedicated Service Account.
-- Access to the MCP endpoint should be restricted to authorized agent clients.
-- PII (Personally Identifiable Information) is redacted from tool outputs where possible.
+### 3. `get_analysis_detail`
+Fetch the full AI analysis report for a specific session.
+
+**Schema:**
+```json
+{
+  "name": "get_analysis_detail",
+  "description": "Get detailed AI results (acne score, wrinkle depth, etc.).",
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "sessionId": { "type": "string" }
+    },
+    "required": ["sessionId"]
+  }
+}
+```
+
+## Context & Error Handling
+
+### Context Management
+- The MCP server is stateless.
+- It does not store conversation history. Agents must maintain their own context window.
+- Large responses (e.g., `export_zone_history`) may be truncated if they exceed 100KB.
+
+### Error Propagation
+Errors are returned as standard MCP tool errors:
+```json
+{
+  "isError": true,
+  "content": [
+    {
+      "type": "text",
+      "text": "Error: User not found (404)"
+    }
+  ]
+}
+```
