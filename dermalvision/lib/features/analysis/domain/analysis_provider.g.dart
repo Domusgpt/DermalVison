@@ -7,11 +7,12 @@ part of 'analysis_provider.dart';
 // **************************************************************************
 
 String _$analysisRepositoryHash() =>
-    r'3ef8df6e9874c871fc072c58bd24dc61a31561be';
+    r'be638ab453bf2114a1f2719fd9e3a675f197b3f4';
 
 /// See also [analysisRepository].
 @ProviderFor(analysisRepository)
-final analysisRepositoryProvider = Provider<AnalysisRepository>.internal(
+final analysisRepositoryProvider =
+    AutoDisposeProvider<AnalysisRepository>.internal(
   analysisRepository,
   name: r'analysisRepositoryProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -21,8 +22,8 @@ final analysisRepositoryProvider = Provider<AnalysisRepository>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef AnalysisRepositoryRef = ProviderRef<AnalysisRepository>;
-String _$analysisHash() => r'ff8ca0c34fb7b0096355fa1da159fb38c217c33e';
+typedef AnalysisRepositoryRef = AutoDisposeProviderRef<AnalysisRepository>;
+String _$analysisResultHash() => r'1d86b487e4635ce9fad2f0ea524a350d1c8a3917';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -45,30 +46,30 @@ class _SystemHash {
   }
 }
 
-/// See also [analysis].
-@ProviderFor(analysis)
-const analysisProvider = AnalysisFamily();
+/// See also [analysisResult].
+@ProviderFor(analysisResult)
+const analysisResultProvider = AnalysisResultFamily();
 
-/// See also [analysis].
-class AnalysisFamily extends Family<AsyncValue<AnalysisResult?>> {
-  /// See also [analysis].
-  const AnalysisFamily();
+/// See also [analysisResult].
+class AnalysisResultFamily extends Family<AsyncValue<AnalysisResult?>> {
+  /// See also [analysisResult].
+  const AnalysisResultFamily();
 
-  /// See also [analysis].
-  AnalysisProvider call(
-    String analysisId,
+  /// See also [analysisResult].
+  AnalysisResultProvider call(
+    String sessionId,
   ) {
-    return AnalysisProvider(
-      analysisId,
+    return AnalysisResultProvider(
+      sessionId,
     );
   }
 
   @override
-  AnalysisProvider getProviderOverride(
-    covariant AnalysisProvider provider,
+  AnalysisResultProvider getProviderOverride(
+    covariant AnalysisResultProvider provider,
   ) {
     return call(
-      provider.analysisId,
+      provider.sessionId,
     );
   }
 
@@ -84,90 +85,93 @@ class AnalysisFamily extends Family<AsyncValue<AnalysisResult?>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'analysisProvider';
+  String? get name => r'analysisResultProvider';
 }
 
-/// See also [analysis].
-class AnalysisProvider extends AutoDisposeStreamProvider<AnalysisResult?> {
-  /// See also [analysis].
-  AnalysisProvider(
-    String analysisId,
+/// See also [analysisResult].
+class AnalysisResultProvider
+    extends AutoDisposeFutureProvider<AnalysisResult?> {
+  /// See also [analysisResult].
+  AnalysisResultProvider(
+    String sessionId,
   ) : this._internal(
-          (ref) => analysis(
-            ref as AnalysisRef,
-            analysisId,
+          (ref) => analysisResult(
+            ref as AnalysisResultRef,
+            sessionId,
           ),
-          from: analysisProvider,
-          name: r'analysisProvider',
+          from: analysisResultProvider,
+          name: r'analysisResultProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$analysisHash,
-          dependencies: AnalysisFamily._dependencies,
-          allTransitiveDependencies: AnalysisFamily._allTransitiveDependencies,
-          analysisId: analysisId,
+                  : _$analysisResultHash,
+          dependencies: AnalysisResultFamily._dependencies,
+          allTransitiveDependencies:
+              AnalysisResultFamily._allTransitiveDependencies,
+          sessionId: sessionId,
         );
 
-  AnalysisProvider._internal(
+  AnalysisResultProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.analysisId,
+    required this.sessionId,
   }) : super.internal();
 
-  final String analysisId;
+  final String sessionId;
 
   @override
   Override overrideWith(
-    Stream<AnalysisResult?> Function(AnalysisRef provider) create,
+    FutureOr<AnalysisResult?> Function(AnalysisResultRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: AnalysisProvider._internal(
-        (ref) => create(ref as AnalysisRef),
+      override: AnalysisResultProvider._internal(
+        (ref) => create(ref as AnalysisResultRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        analysisId: analysisId,
+        sessionId: sessionId,
       ),
     );
   }
 
   @override
-  AutoDisposeStreamProviderElement<AnalysisResult?> createElement() {
-    return _AnalysisProviderElement(this);
+  AutoDisposeFutureProviderElement<AnalysisResult?> createElement() {
+    return _AnalysisResultProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is AnalysisProvider && other.analysisId == analysisId;
+    return other is AnalysisResultProvider && other.sessionId == sessionId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, analysisId.hashCode);
+    hash = _SystemHash.combine(hash, sessionId.hashCode);
 
     return _SystemHash.finish(hash);
   }
 }
 
-mixin AnalysisRef on AutoDisposeStreamProviderRef<AnalysisResult?> {
-  /// The parameter `analysisId` of this provider.
-  String get analysisId;
+mixin AnalysisResultRef on AutoDisposeFutureProviderRef<AnalysisResult?> {
+  /// The parameter `sessionId` of this provider.
+  String get sessionId;
 }
 
-class _AnalysisProviderElement
-    extends AutoDisposeStreamProviderElement<AnalysisResult?> with AnalysisRef {
-  _AnalysisProviderElement(super.provider);
+class _AnalysisResultProviderElement
+    extends AutoDisposeFutureProviderElement<AnalysisResult?>
+    with AnalysisResultRef {
+  _AnalysisResultProviderElement(super.provider);
 
   @override
-  String get analysisId => (origin as AnalysisProvider).analysisId;
+  String get sessionId => (origin as AnalysisResultProvider).sessionId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
