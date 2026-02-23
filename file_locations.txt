@@ -1,0 +1,7 @@
+dermalvision/lib/features/analysis/data/analysis_repository.dart
+dermalvision/lib/features/analysis/domain/analysis_repository.dart
+dermalvision/lib/features/skin_shurpa/data/chat_repository.dart
+dermalvision/lib/features/skin_shurpa/domain/chat_repository.dart
+dermalvision/lib/features/subscription/data/subscription_repository.dart
+dermalvision/lib/features/subscription/domain/subscription_repository.dart
+dermalvision/lib/features/auth/domain/auth_provider.dart

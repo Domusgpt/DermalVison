@@ -1,22 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import '../../auth/domain/auth_provider.dart';
-import '../domain/analysis_result.dart';
-import 'analysis_repository.dart';
-import '../data/analysis_repository.dart';
+import '../../analysis/data/analysis_repository.dart';
+import 'analysis_result.dart';
 
 part 'analysis_provider.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 AnalysisRepository analysisRepository(AnalysisRepositoryRef ref) {
-  return FirebaseAnalysisRepository(FirebaseFirestore.instance);
+  return AnalysisRepository(
+    firestore: FirebaseFirestore.instance,
+    functions: FirebaseFunctions.instance,
+  );
 }
 
 @riverpod
-Stream<AnalysisResult?> analysis(AnalysisRef ref, String analysisId) {
-  final user = ref.watch(authStateProvider).value;
-  if (user == null) return const Stream.empty();
-  return ref
-      .watch(analysisRepositoryProvider)
-      .watchAnalysis(user.uid, analysisId);
+Future<AnalysisResult?> analysisResult(AnalysisResultRef ref, String sessionId) {
+  final repository = ref.watch(analysisRepositoryProvider);
+  return repository.getAnalysisResult(sessionId);
 }
