@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/chat_provider.dart';
+import '../domain/chat_provider.dart';
 import 'widgets/message_bubble.dart';
 import 'widgets/typing_indicator.dart';
 
